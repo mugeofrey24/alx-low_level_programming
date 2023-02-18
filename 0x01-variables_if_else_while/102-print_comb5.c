@@ -3,32 +3,29 @@
 #include <string.h>
 
 /**
- * main - my main
- * Description: hello
- * Return: yesss
+ * main - Entry point
+ * Return: Always 0
  */
 
 int main(void)
+	
 {
-	int i;
+	int p, q;
 
-	int j;
-
-	for (i = 0; i < 100; i++)
+	for (p = 0; p <= 98; p++)
 	{
-		for (j = i; j < 100; j++)
-		{
-			putchar(i / 10 + '0');
-			putchar(i % 10 + '0');
-			putchar(' ');
-			putchar(j / 10 + '0');
-			putchar(j % 10 + '0');
-			if (i != 99 || j != 99)
-			{
-				putchar(',');
-				putchar(' ');
-			}
-		}
+	for (q = p + 1; q <= 99; q++)
+	{
+	putchar((p / 10) + '0');
+	putchar((p % 10) + '0');
+	putchar(' ');
+	putchar((q / 10) + '0');
+	putchar((q % 10) + '0');
+	if (p == 98 && q == 99)
+	continue;
+	putchar(',');
+	putchar(' ');
+	}
 	}
 	putchar('\n');
 	return (0);
