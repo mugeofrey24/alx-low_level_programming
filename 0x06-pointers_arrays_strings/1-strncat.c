@@ -54,4 +54,5 @@ char *_strncat(char *dest, char *src, int n)
 		}
 	}
 
-	
+	return (_strcat(dest, new_src));
+}
