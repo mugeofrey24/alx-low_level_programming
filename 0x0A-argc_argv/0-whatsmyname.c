@@ -1,16 +1,16 @@
-#include <stdio.h>
 #include "main.h"
+#include <stdio.h>
 
 /**
- * main - prints program file path
- * @agrc: number of arguments
- * @argv: arguments
- * Description: prints program name
- * Return: 0
+ * main - it all starts here
+ * @argc: the number of arguments
+ * @argv: arrayy of pointers to arguments
+ *
+ * Return: Always 0.
  */
-
-int main(__attribute__((unused)) int agrc, char *argv[])
+int main(int argc, char *argv[])
 {
-	printf("%s\n", argv[0]);
+	if (argc)
+		printf("%s\n", argv[0]);
 	return (0);
 }
