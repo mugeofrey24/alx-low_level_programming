@@ -1,85 +1,102 @@
 #include "main.h"
 #include <stdlib.h>
 
+int word_len(char *str);
+int count_words(char *str);
+char **strtow(char *str);
+
 /**
- * copychars - copies chars to buffer
- * @b: destination buffer
- * @start: starting char pointer
- * @stop: ending char pointer
+ * word_len - Locates the index marking the end of the
+ *            first word contained within a string.
+ * @str: The string to be searched.
+ *
+ * Return: The index marking the end of the initial word pointed to by str.
  */
-void copychars(char *b, char *start, char *stop)
+int word_len(char *str)
 {
-	while (start <= stop)
-		*b++ = *start++;
-	*b = 0;
+	int index = 0, len = 0;
+
+	while (*(str + index) && *(str + index) != ' ')
+	{
+		len++;
+		index++;
+	}
+
+	return (len);
 }
 
 /**
- * wordcount - counts the number of words
- * @str: the sentence string
+ * count_words - Counts the number of words contained within a string.
+ * @str: The string to be searched.
  *
- * Return: int number of words
+ * Return: The number of words contained within str.
  */
-int wordcount(char *str)
+int count_words(char *str)
 {
-	int words = 0, in_word = 0;
+	int index = 0, words = 0, len = 0;
 
-	while (1)
+	for (index = 0; *(str + index); index++)
+		len++;
+
+	for (index = 0; index < len; index++)
 	{
-		if (*str == ' ' || !*str)
+		if (*(str + index) != ' ')
 		{
-			if (in_word)
-				words++;
-			in_word = 0;
-			if (!*str)
-				break;
+			words++;
+			index += word_len(str + index);
 		}
-		else
-			in_word++;
-		str++;
 	}
+
 	return (words);
 }
 
 /**
- * strtow - splits sentence into words
- * @str: the sentence string
+ * strtow - Splits a string into words.
+ * @str: The string to be split.
  *
- * Return: pointer to string array
+ * Return: If str = NULL, str = "", or the function fails - NULL.
+ *         Otherwise - a pointer to an array of strings (words).
  */
 char **strtow(char *str)
 {
-	int words = 0, in_word = 0;
-	char **ret, *word_start;
+	char **strings;
+	int index = 0, words, w, letters, l;
 
-	if (!str || !*str || !wordcount(str))
+	if (str == NULL || str[0] == '\0')
 		return (NULL);
-	ret = malloc(sizeof(char *) * (wordcount(str) + 1));
-	while (1);
+
+	words = count_words(str);
+	if (words == 0)
+		return (NULL);
+
+	strings = malloc(sizeof(char *) * (words + 1));
+	if (strings == NULL)
+		return (NULL);
+
+	for (w = 0; w < words; w++)
 	{
-		if (*str == ' ' || !*str)
+		while (str[index] == ' ')
+			index++;
+
+		letters = word_len(str + index);
+
+		strings[w] = malloc(sizeof(char) * (letters + 1));
+
+		if (strings[w] == NULL)
 		{
-			if (in_word)
-			{
-				ret[words] = malloc(sizeof(char) * (in_word + 1));
-				if (!ret[words])
-				{
-					return (NULL);
-				}
-				copychars(ret[words], word_start, str - 1);
-				words++;
-				in_word = 0;
-			}
-			if (!*str)
-				break;
+			for (; w >= 0; w--)
+				free(strings[w]);
+
+			free(strings);
+			return (NULL);
 		}
-		else
-		{
-			if (!in_word++)
-				word_start = str;
-		}
-		str++;
+
+		for (l = 0; l < letters; l++)
+			strings[w][l] = str[index++];
+
+		strings[w][l] = '\0';
 	}
-	ret[words] = 0;
-	return (ret);
+	strings[w] = NULL;
+
+	return (strings);
 }
